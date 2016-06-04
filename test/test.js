@@ -10,6 +10,9 @@ test("Basic HTTP Tests - GET /{yourname*}", function(t) { // t
     server.inject(options, function(response) {
         t.equal(response.statusCode, 200);  //  Expect http response status code to be 200 ("Ok")
         t.equal(response.result.length, 12); // Expect result to be "Hello Timmy!" (12 chars long)
-        t.end(); // t.end() callback is required to end the test in tape
+        server.stop(function(){
+              console.log('done');
+            });
+        t.end();// t.end() callback is required to end the test in tape
     });
 });
