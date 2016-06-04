@@ -1,3 +1,10 @@
 language: node_js
 node_js:
-  - 6.2.1
+- 5
+deploy:
+  provider: heroku
+  api_key:
+    secure: ojKviy5AKCikzfE7JnoRqDlJ0xIgAP5d0XbJLW9BaSc8s205HBoLE4B5kwo6e4SI1HPNS6ZrSmIiUi/y5d5bN5ASfqI7BHzTe0T2f4dFvdfaTQQiDMW4qap5zBLji5IF+7VpuA7I+T5K82a5lzKpNnRynUoBvWjdVGT0gzLez3qPEutBJW4+T03KQ9Ai3RQvp08VHnDoK5HINJMAJ8XArmstXD/Kqre3AzZCY6cSiC468fNPMG8EmIRikUlIX+p3YhHZr5/vuHnXFI2/tZVLKrbHIquin/Uuq0L9visBGO3kYrZ8uJg1zrSl9MANg3q9MlcTNco5aID7ABVTl0s7WPBXWOsXXmPyB8bMO9yqBwnaru9F/zRiAfKJ5UW+JctWSGL1lM4LvRKxfZhx8Fwt/iMnVghajJLun5PyE2TOvN750ikEl3vrqzUJex1TqcqrjFBKGtyjdZMMowSp9sD4kxWWXSuSIc+R3WnyPcACkbGsrdlQsmXgGyUE8f9dZ93hG6cgofeVraPr2fZVJTXlvrf2JPgtSzD+c17MTFYdhvfLePTURNtdNUeIvFdhU71besbFY4Y8lYL0dZai9159p8vzEISo5WvB2fmP/FV5PZW5CURK0UGrcYOLIKH0q43RFaS2mH2pxLKp6NjzAOOIO08PNsj/AIu6CzE2n6GELCc=
+  app: getwaya
+  on:
+    repo: evenmatrix/waya
