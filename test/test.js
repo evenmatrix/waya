@@ -29,9 +29,9 @@ test("Deny view of photo if unauthenticated /photo/{id*} ", function(t) {
 
 test("Login with fake credentials should return 401", function(t) {
     var options = {
-        method: "POST",
-        url: "/login",
-        payload:{
+        method: "GET",
+        url: "/firebase_token",
+        headers:{
           "X-Verify-Credentials-Authorization":"value",
           "X-Auth-Service-Provider":"https://api.digits.com/1.1/sdk/account.json"
         }

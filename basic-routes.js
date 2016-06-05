@@ -15,18 +15,18 @@ const baseRoutes = {
       });
 
       server.route({
-        method: ['post'],
-        path: '/login',
+        method: ['get'],
+        path: '/firebase_token',
         handler: (request, reply) =>{
           let tokenGenerator = new FirebaseTokenGenerator(FIRE_BASE_SECRET);
           let req = require('request');
 
           let headers = {
-            'Authorization' : request.payload['X-Verify-Credentials-Authorization']
+            'Authorization' : request.headers['X-Verify-Credentials-Authorization']
           };
 
           let options = {
-            url: request.payload['X-Auth-Service-Provider'],
+            url: request.headers['X-Auth-Service-Provider'],
             headers: headers
           };
           // get Twitter / Digits validated information
