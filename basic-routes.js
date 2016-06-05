@@ -1,34 +1,74 @@
 const Joi  = require('joi');
+const Boom = require('boom');
+const FirebaseTokenGenerator = require("firebase-token-generator");
+const FIRE_BASE_SECRET=process.env.FIRE_BASE_SECRET;
+
 const baseRoutes = {
   register: (server, options, next)=> {
-    // add “hello world” route
+      // add “hello world” route
+      server.route({
+        method: 'GET',
+        path: '/',
+        handler: function (request, reply) {
+          reply('Hello Future Studio!')
+        }
+      });
+
+      server.route({
+        method: ['post'],
+        path: '/login',
+        handler: (request, reply) =>{
+          let tokenGenerator = new FirebaseTokenGenerator(FIRE_BASE_SECRET);
+          let req = require('request');
+
+          let headers = {
+            'Authorization' : request.payload['X-Verify-Credentials-Authorization']
+          };
+
+          let options = {
+            url: request.payload['X-Auth-Service-Provider'],
+            headers: headers
+          };
+          // get Twitter / Digits validated information
+          req(options, (error, response, body)=>{
+            console.log("body",body);
+            if (!error && response.statusCode == 200) {
+              var digitsData = JSON.parse(body);
+              console.log("digitsData: "+data);
+              // create FBToken
+              let  token  = tokenGenerator.createToken({uid: digitsData.id_str/*, username: 'bla bla' */});
+              reply(token)
+            }else{
+              reply(Boom.unauthorized('Unauthorized'));
+            }
+          });
+          // process the request’s payload …
+    }
+  })
+
     server.route({
-      method: 'GET',
-      path: '/',
-      handler: function (request, reply) {
-        reply('Hello Future Studio!')
-      }
+        method: 'GET',
+        path: '/{yourname*}',
+        config: {  // validate will ensure YOURNAME is valid before replying to your request
+            validate: { params: { yourname: Joi.string().max(40).min(2).alphanum() } },
+            handler: function (req,reply) {
+                reply('Hello '+ req.params.yourname + '!');
+            }
+        }
     });
 
     server.route({
-      method: ['GET' ],
-      path: '/login',
-      handler: function (request, reply) {
-        // process the request’s payload …
-      reply('A login Path')
-  }
-})
-
-server.route({
-    method: 'GET',
-    path: '/{yourname*}',
-    config: {  // validate will ensure YOURNAME is valid before replying to your request
-        validate: { params: { yourname: Joi.string().max(40).min(2).alphanum() } },
-        handler: function (req,reply) {
-            reply('Hello '+ req.params.yourname + '!');
+        method: 'GET',
+        path: '/photo/{id*}',
+        config: {  // validate will ensure `id` is valid before replying to your request
+          validate: { params: { id: Joi.string().max(40).min(2).alphanum() } },
+          handler: function (req,reply) {
+              // until we implement authentication we are simply returning a 401:
+              reply(Boom.unauthorized('Please log-in to see that'));
+              // the key here is our use of the Boom.unauthorised method
+          }
         }
-    }
-});
+    });
 
     next();
   }
