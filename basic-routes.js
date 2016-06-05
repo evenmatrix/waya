@@ -29,6 +29,7 @@ const baseRoutes = {
             url: request.headers['X-Auth-Service-Provider'],
             headers: headers
           };
+          console.log("options",options);
           // get Twitter / Digits validated information
           req(options, (error, response, body)=>{
             console.log("body",body);
