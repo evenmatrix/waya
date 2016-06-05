@@ -38,7 +38,12 @@ const baseRoutes = {
               console.log("digitsData: ",digitsData);
               // create FBToken
               let  token  = tokenGenerator.createToken({uid: digitsData.id_str,phone_number: digitsData.phone_number});
-              reply(token)
+              let auth = {
+                access_token: token,
+                uid: digitsData.id_str,
+                phone_number: digitsData.phone_number
+              }
+              reply(auth);
             }else{
               reply(Boom.unauthorized('Unauthorized'));
             }
