@@ -32,8 +32,8 @@ test("Login with fake credentials should return 401", function(t) {
         method: "GET",
         url: "/firebase_token",
         headers:{
-          "X-Verify-Credentials-Authorization":"value",
-          "X-Auth-Service-Provider":"https://api.digits.com/1.1/sdk/account.json"
+          'X-Verify-Credentials-Authorization':"value",
+          'X-Auth-Service-Provider':"https://api.digits.com/1.1/sdk/account.json"
         }
     };
     // server.inject lets you similate an http request

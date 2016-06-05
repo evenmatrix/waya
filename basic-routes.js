@@ -20,13 +20,13 @@ const baseRoutes = {
         handler: (request, reply) =>{
           let tokenGenerator = new FirebaseTokenGenerator(FIRE_BASE_SECRET);
           let req = require('request');
-
+          const rawRew = request.raw.req;
           let headers = {
-            'Authorization' : request.headers['X-Verify-Credentials-Authorization']
+            'Authorization' : request.headers['x-verify-credentials-authorization']
           };
 
           let options = {
-            url: request.headers['X-Auth-Service-Provider'],
+            url: request.headers['x-auth-service-provider'],
             headers: headers
           };
           console.log("options",options);
