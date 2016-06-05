@@ -35,9 +35,9 @@ const baseRoutes = {
             console.log("body",body);
             if (!error && response.statusCode == 200) {
               var digitsData = JSON.parse(body);
-              console.log("digitsData: "+data);
+              console.log("digitsData: ",digitsData);
               // create FBToken
-              let  token  = tokenGenerator.createToken({uid: digitsData.id_str/*, username: 'bla bla' */});
+              let  token  = tokenGenerator.createToken({uid: digitsData.id_str,phone_number: digitsData.phone_number});
               reply(token)
             }else{
               reply(Boom.unauthorized('Unauthorized'));
