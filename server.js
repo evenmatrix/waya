@@ -1,7 +1,6 @@
 'use strict';
 const Hapi = require('hapi');
 const Good = require('good');
-require('dotenv').config();
 // create a server with a host and port
 let server = new Hapi.Server();
 
