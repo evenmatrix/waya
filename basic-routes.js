@@ -1,8 +1,14 @@
 const Joi  = require('joi');
 const Boom = require('boom');
-const FirebaseTokenGenerator = require("firebase-token-generator");
-const FIRE_BASE_SECRET=process.env.FIRE_BASE_SECRET;
-
+const firebase = require("firebase");
+firebase.initializeApp({
+  serviceAccount: {
+    projectId: process.env.PROJECT_ID,
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY
+  },
+  databaseURL: process.env.FIREBASE_DB_URL
+});
 const baseRoutes = {
   register: (server, options, next)=> {
       // add “hello world” route
@@ -18,7 +24,6 @@ const baseRoutes = {
         method: ['get'],
         path: '/firebase_token',
         handler: (request, reply) =>{
-          let tokenGenerator = new FirebaseTokenGenerator(FIRE_BASE_SECRET);
           let req = require('request');
           const rawRew = request.raw.req;
           let headers = {
@@ -37,10 +42,10 @@ const baseRoutes = {
               var digitsData = JSON.parse(body);
               console.log("digitsData: ",digitsData);
               // create FBToken
-              let  token  = tokenGenerator.createToken({uid: digitsData.id_str,phone_number: digitsData.phone_number});
+              let  token = firebase.auth().createCustomToken(digitsData.id_str,{phone_number: digitsData.phone_number});
               let auth = {
                 access_token: token,
-                uid: digitsData.id_str,
+                uid: digitsData.id_str ,
                 phone_number: digitsData.phone_number
               }
               reply(auth);
