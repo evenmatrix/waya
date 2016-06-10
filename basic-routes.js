@@ -43,7 +43,8 @@ const baseRoutes = {
               var digitsData = JSON.parse(body);
               console.log("digitsData: ",digitsData);
               // create FBToken
-              //let token = firebase.auth().createCustomToken(digitsData.id_str,{phone_number: digitsData.phone_number});
+              let token = firebase.auth().createCustomToken(digitsData.id_str,{phone_number: digitsData.phone_number});
+              /**
               let iat = Date.now()/1000;
               let exp = iat + 60*60*24*7;
               let token = jwt.sign({
@@ -57,13 +58,11 @@ const baseRoutes = {
                 claims:{
                   phone_number: digitsData.phone_number
                 }
-              },process.env.PRIVATE_KEY, { algorithm: 'RS256'});
+              },process.env.PRIVATE_KEY, { algorithm: 'RS256'});**/
               let auth = {
                 access_token: token,
                 uid: digitsData.id_str ,
                 phone_number: digitsData.phone_number,
-                iat: iat,
-                exp: exp
               }
               reply(auth);
             }else{
