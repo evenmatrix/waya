@@ -1,6 +1,7 @@
 const Joi  = require('joi');
 const Boom = require('boom');
 const firebase = require("firebase");
+const jwt = require('jsonwebtoken');
 firebase.initializeApp({
   serviceAccount: {
     projectId: process.env.PROJECT_ID,
@@ -42,11 +43,27 @@ const baseRoutes = {
               var digitsData = JSON.parse(body);
               console.log("digitsData: ",digitsData);
               // create FBToken
-              let  token = firebase.auth().createCustomToken(digitsData.id_str,{phone_number: digitsData.phone_number});
+              //let token = firebase.auth().createCustomToken(digitsData.id_str,{phone_number: digitsData.phone_number});
+              let iat = Date.now()/1000;
+              let exp = iat + 60*60*24*7;
+              let token = jwt.sign({
+                iss: process.env.CLIENT_EMAIL,
+                sub: process.env.CLIENT_EMAIL,
+                aud: "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
+                uid: digitsData.id_str ,
+                phone_number: digitsData.phone_number,
+                iat: iat,
+                exp: exp,
+                claims:{
+                  phone_number: digitsData.phone_number
+                }
+              },process.env.PRIVATE_KEY, { algorithm: 'RS256'});
               let auth = {
                 access_token: token,
                 uid: digitsData.id_str ,
-                phone_number: digitsData.phone_number
+                phone_number: digitsData.phone_number,
+                iat: iat,
+                exp: exp
               }
               reply(auth);
             }else{
